@@ -158,6 +158,6 @@ zhipuai==2.1.5.20250825
 zipp
 zstandard
 langchain-community
-sentence-transformers
+sentence-transformers==5.1.2
 langchain_openai
 langchain_huggingface
