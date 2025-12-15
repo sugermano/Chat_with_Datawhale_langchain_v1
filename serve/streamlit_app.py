@@ -2,7 +2,7 @@
 import streamlit as st
 # from langchain_openai import ChatOpenAI
 import sys
-sys.path.append("../../Chat_with_Datawhale_langchain") # 将父目录放入系统路径中
+sys.path.append("../../Chat_with_Datawhale_langchain_v1") # 将父目录放入系统路径中
 # from llm.zhipuai_llm import ZhipuAILLM
 from langchain_openai import ChatOpenAI
 import os
@@ -120,4 +120,5 @@ def main():
         st.session_state.messages.append(("ai", output))
 
 main()
+
 
