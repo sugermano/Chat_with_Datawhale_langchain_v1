@@ -36,7 +36,7 @@ class Item(BaseModel):
     temperature : float = 0.1# 温度系数
     if_history : bool = False # 是否使用历史对话功能
     # API_Key
-    api_key: str = 'a7db401f88674a27a06a5d4698e0550d.Vd0YaLGBb0cRHegy'
+    api_key: str = ''
     # Secret_Key
     secret_key : str = None
     # access_token
@@ -48,9 +48,9 @@ class Item(BaseModel):
     # Secret_key
     Wenxin_secret_key : str = None
     # 数据库路径
-    db_path : str = "D:/gitRepository/llm-universe/data_base/vector_db/chroma"
+    db_path : str = "../database/vector_db/chroma"
     # 源文件路径
-    file_path : str = "D:/gitRepository/llm-universe/data_base/knowledge_db"
+    file_path : str = "../database/knowledge_db"
     # prompt template
     # prompt_template : str = template
     # Template 变量
