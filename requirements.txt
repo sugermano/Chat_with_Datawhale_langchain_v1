@@ -158,3 +158,4 @@ zhipuai
 zipp
 zstandard
 langchain-community
+langchain_openai
