@@ -2,27 +2,27 @@
 import streamlit as st
 # from langchain_openai import ChatOpenAI
 import sys
-sys.path.append("/mount/src/chat_with_datawhale_langchain_v1") # 将父目录放入系统路径中
-from llm.zhipuai_llm import ZhipuAILLM
+sys.path.append("../../Chat_with_Datawhale_langchain") # 将父目录放入系统路径中
+# from llm.zhipuai_llm import ZhipuAILLM
+from langchain_openai import ChatOpenAI
 import os
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableBranch, RunnablePassthrough
-from embedding.zhipuai_embedding import ZhipuAIEmbeddings
+# from embedding.zhipuai_embedding import ZhipuAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-
+from qa_chain.get_vectordb import get_vectordb
+from dotenv import find_dotenv, load_dotenv
+_ = load_dotenv(find_dotenv())
+api_key = os.environ["ZHIPUAI_API_KEY"]
 # 2. 定义get_retriever函数，该函数返回一个检索器
 def get_retriever():
-    # 定义 Embeddings
-    embedding = ZhipuAIEmbeddings()
     # 向量数据库持久化路径
-    persist_directory = '../data_base/vector_db/chroma'
+    persist_directory = "./vector_db"
     # 加载数据库
-    vectordb = Chroma(
-        persist_directory=persist_directory,
-        embedding_function=embedding
-    )
-    return vectordb.as_retriever()
+    vectordb = get_vectordb(persist_path=persist_directory, embedding='m3e')
+    return vectordb.as_retriever(search_type="similarity", search_kwargs={'k': 4})
 
 # 3. 定义combine_docs函数， 该函数处理检索器返回的文本
 def combine_docs(docs):
@@ -31,7 +31,7 @@ def combine_docs(docs):
 # 4. 定义get_qa_history_chain函数，该函数可以返回一个检索问答链
 def get_qa_history_chain():
     retriever = get_retriever()
-    llm = ZhipuAILLM(model="glm-4-plus", temperature=0)
+    llm = ChatOpenAI(model="glm-4.6", temperature=0, streaming=True, openai_api_key=api_key, openai_api_base="https://open.bigmodel.cn/api/paas/v4/")
     condense_question_system_template = (
         "请根据聊天记录总结用户最近的问题，"
         "如果没有多余的聊天记录则返回用户的问题。"
@@ -102,9 +102,9 @@ def main():
                 st.write(message[1]) # 打印内容
     if prompt := st.chat_input("Say something"):
         # 将用户输入添加到对话历史中
-        st.session_state.messages.append(("user", prompt))
+        st.session_state.messages.append(("human", prompt))
         # 显示当前用户输入
-        with messages.chat_message("user"):
+        with messages.chat_message("human"):
             st.write(prompt)
         # 生成回复
         answer = gen_response(
@@ -112,9 +112,11 @@ def main():
             input=prompt,
             chat_history=st.session_state.messages
         )
+        # print(answer)
         # 流式输出
-        with messages.chat_message("assistant"):
+        with messages.chat_message("ai"):
             output = st.write_stream(answer)
         # 将输出存入st.session_state.messages
-        st.session_state.messages.append(("assistant", output))
+        st.session_state.messages.append(("ai", output))
 
+main()
