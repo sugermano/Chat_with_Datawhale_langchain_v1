@@ -2,7 +2,7 @@
 import streamlit as st
 # from langchain_openai import ChatOpenAI
 import sys
-sys.path.append("D:/gitRepository/Chat_with_Datawhale_langchain") # 将父目录放入系统路径中
+sys.path.append("/mount/src/chat_with_datawhale_langchain_v1") # 将父目录放入系统路径中
 from llm.zhipuai_llm import ZhipuAILLM
 import os
 from langchain_core.output_parsers import StrOutputParser
@@ -16,7 +16,7 @@ def get_retriever():
     # 定义 Embeddings
     embedding = ZhipuAIEmbeddings()
     # 向量数据库持久化路径
-    persist_directory = 'D:/gitRepository/llm-universe/data_base/vector_db/chroma'
+    persist_directory = '../data_base/vector_db/chroma'
     # 加载数据库
     vectordb = Chroma(
         persist_directory=persist_directory,
@@ -117,3 +117,4 @@ def main():
             output = st.write_stream(answer)
         # 将输出存入st.session_state.messages
         st.session_state.messages.append(("assistant", output))
+
