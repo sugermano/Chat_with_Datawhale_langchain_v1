@@ -10,8 +10,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableBranch, RunnablePassthrough
 # from embedding.zhipuai_embedding import ZhipuAIEmbeddings
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+# from langchain_huggingface import HuggingFaceEmbeddings
+# from langchain_community.vectorstores import Chroma
 from qa_chain.get_vectordb import get_vectordb
 from dotenv import find_dotenv, load_dotenv
 _ = load_dotenv(find_dotenv())
@@ -120,3 +120,4 @@ def main():
         st.session_state.messages.append(("ai", output))
 
 main()
+
