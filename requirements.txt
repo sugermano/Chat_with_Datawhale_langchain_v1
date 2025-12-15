@@ -159,3 +159,4 @@ zipp
 zstandard
 langchain-community
 langchain_openai
+langchain_huggingface
