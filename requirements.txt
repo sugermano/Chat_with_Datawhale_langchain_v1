@@ -154,7 +154,7 @@ websocket-client
 websockets
 wheel
 yarl
-zhipuai
+zhipuai==2.1.5.20250825
 zipp
 zstandard
 langchain-community
